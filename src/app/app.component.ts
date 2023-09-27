@@ -54,10 +54,12 @@ export class AppComponent {
   
     if (lastKey === '/' && op === '*') {
       return;
-    } else if (lastKey === '*' && op === '/') {
+    } else if (lastKey === '*' && op === '/' ) {
       return;
     }
-  
+    if(lastKey === '%') {
+          return;
+       }
     if (/[/+\-*]/.test(lastKey) && lastKey === op) {
       return;
     }
