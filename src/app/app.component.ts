@@ -25,28 +25,46 @@ export class AppComponent {
     this.calcAnswer();
   }
 
-  pressOperator(op: string) {
+  // pressOperator(op: string) {
  
 
-    const lastKey = this.input[this.input.length-1];
+  //   const lastKey = this.input[this.input.length-1];
     
-    if (lastKey === '/' || lastKey === '*')  {
-      this.result = ""; 
- return;
+  //   if (lastKey === '/' && op === '*')  {
+  //     this.result = ""; 
+
     
-    }
-    else if (lastKey === '+' || lastKey === '-'){
-      this.result=eval(this.input)
-    }
-    if(lastKey === '%') {
+  //   }
+    
+  //   else if (lastKey === '+' || lastKey === '-'){
+  //     this.result=eval(this.input)
+  //   }
+  //   if(lastKey === '%') {
+  //     return;
+  //   }
+   
+  //   this.input = this.input + op
+  //   this.calcAnswer();
+  // }
+ 
+  pressOperator(op: string) {
+  
+    const lastKey = this.input[this.input.length - 1];
+  
+  
+    if (lastKey === '/' && op === '*') {
+      return;
+    } else if (lastKey === '*' && op === '/') {
       return;
     }
-   
-    this.input = this.input + op
+  
+    if (/[/+\-*]/.test(lastKey) && lastKey === op) {
+      return;
+    }
+  
+    this.input = this.input + op;
     this.calcAnswer();
   }
- 
- 
   clear() {
     if (this.input !== '') {
       this.input = this.input.slice(0, -1);
@@ -100,7 +118,7 @@ export class AppComponent {
       formula = formula.replace(/(\d+)%0/g, '$1');
        this.input = formula
     }
-    let key = this.input[this.input.length-1];
+    //let key = this.input[this.input.length-1];
     if (formula.includes('%')){
       // if(formula.includes('.')){
       //   formula = formula.replace(/(%?\d+(\.\d+)?)/g, function(match) {
@@ -118,11 +136,8 @@ export class AppComponent {
       return (num / 100).toString();
     });
   }
-  
-  // else if(formula.includes(".") && !formula.startsWith(".0") || !formula.startsWith(".") && key == "%"){
-  //   formula = formula.replace(/%(\d+)/g, '* ($1 / 100) *')
-  
-  // }
+ 
+ 
   else{
   formula = formula.replace(/%(\d+)/g, '* ($1 / 100)')
   }
