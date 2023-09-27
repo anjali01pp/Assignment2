@@ -28,11 +28,15 @@ export class AppComponent {
   pressOperator(op: string) {
  
 
-    const lastKey = this.input[this.input.length - 1];
+    const lastKey = this.input[this.input.length-1];
     
-    if (lastKey === '/' || lastKey === '*' || lastKey === '-' || lastKey === '+')  {
+    if (lastKey === '/' || lastKey === '*')  {
       this.result = ""; 
-      return;
+ 
+    
+    }
+    else if (lastKey === '+' || lastKey === '-'){
+      this.result=eval(this.input)
     }
     if(lastKey === '%') {
       return;
