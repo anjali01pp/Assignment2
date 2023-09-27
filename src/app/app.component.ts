@@ -66,10 +66,10 @@ export class AppComponent {
     if (this.input !== '') {
       if (this.input.charAt(0) === '-') {
         this.input = this.input.slice(1); 
-        this.result=this.input
+        this.result=eval(this.input)
       } else {
         this.input = '-' + this.input; 
-        this.result=this.input
+        this.result=eval(this.input)
       }
     }
   }
@@ -92,43 +92,33 @@ export class AppComponent {
     if (lastKey === '/' || lastKey === '*' || lastKey === '-' || lastKey === '+' || lastKey === '.')  {
       formula=formula;
     }
-    //  if(/[%]$/.test(formula)){
-    //   formula = formula.replace(/(\d+)%+/g, '($1 / 100)');
-    // //   formula = formula.replace(/(\d+)%+/g, function(match, number) {
-    // //     const num = parseInt(number, 10);
-    // //     const numberOfPercentSymbols = match.length - number.length;
-    // //     const result = num / Math.pow(100, numberOfPercentSymbols);
-    // //     return result.toFixed(6); // Adjust the number of decimal places as needed
-    // //   });
-      
-    //  console.log(eval(formula))
-    
     if (formula.includes('%0')&& formula.includes('%')){
       formula = formula.replace(/(\d+)%0/g, '$1');
        this.input = formula
     }
     if (formula.includes('%')){
-      if(formula.includes('.')){
-        formula = formula.replace(/(%?\d+(\.\d+)?)/g, function(match) {
-          return match.startsWith('%') ? `(${match.slice(1)} / 100)` : match;
-        });
-      }
-     formula = formula.replace(/%(\d+)/g, '* ($1 / 100)')
-    // formula = formula.replace(/(\d+)%+/g, function(match, number) {
-    //   const num = parseFloat(number);
-    //   return (num / Math.pow(100, match.length - number.length)).toString();
-    // });
-    formula = formula.replace(/(\d+(\.\d+)?)%+/g, function(match, number) {
+      // if(formula.includes('.')){
+      //   formula = formula.replace(/(%?\d+(\.\d+)?)/g, function(match) {
+      //     return match.startsWith('%') ? `(${match.slice(1)} / 100)` : match;
+      //   });
+      // }
+    
+    // // formula = formula.replace(/(\d+)%+/g, function(match, number) {
+    // //   const num = parseFloat(number);
+    // //   return (num / Math.pow(100, match.length - number.length)).toString();
+    // // });
+   if(formula.endsWith("%")){
+    formula = formula.replace(/(\d+(\.\d*)?|\.\d+)%/g, function(match, number) {
       const num = parseFloat(number);
       return (num / 100).toString();
     });
-   
-  
+  }
+  formula = formula.replace(/%(\d+)/g, '* ($1 / 100)')
     // formula = formula.replace(/(\d+)%+/g, function(match, number) {
     //   const num = parseFloat(number);
     //   return (num / Math.pow(100, match.length - number.length)).toString();
     // });
-    }
+  }
     // console.log("Formula " +formula);
     // let res = eval(formula);
   
@@ -140,9 +130,14 @@ export class AppComponent {
     // }
    
     try {
-      let cleanedInput = formula.replace(/\b0+(\d+)\b/g, '$1');
+      let  cleanedInput = formula;
+      if (formula.endsWith("%") ) {
+        cleanedInput =  formula.replace(/(^|[^.\d])\.(\d+)%/g, '$10.$2');
+      }
+      else if(formula.startsWith("0") && !formula.startsWith("0.")){
+         cleanedInput = formula.replace(/\b0+(\d+)\b/g, '$1');
+      }
       let res = eval(cleanedInput);
-     
       if (!isNaN(res) && isFinite(res)) {
         this.result = res.toString();
       } 
@@ -153,7 +148,7 @@ export class AppComponent {
         this.result = '';
       }
     } catch (error) {
-      this.result = 'error';
+      this.result = 'Invalid Input';
     }
   }
  
