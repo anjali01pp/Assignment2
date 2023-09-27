@@ -117,7 +117,9 @@ export class AppComponent {
       return (num / 100).toString();
     });
   }
+  else{
   formula = formula.replace(/%(\d+)/g, '* ($1 / 100)')
+  }
     // formula = formula.replace(/(\d+)%+/g, function(match, number) {
     //   const num = parseFloat(number);
     //   return (num / Math.pow(100, match.length - number.length)).toString();
