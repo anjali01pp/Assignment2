@@ -46,9 +46,13 @@ export class AppComponent {
     if (this.input !== '') {
       this.input = this.input.slice(0, -1);
       this.calcAnswer();
+     
     
     } else if (this.input == '') {
       this.result='';
+    }
+     if (this.result == this.text){
+      this.result="";
     }
   
   }
@@ -133,7 +137,7 @@ export class AppComponent {
       if (!isNaN(res) && isFinite(res)) {
         this.result = res.toString();
       } 
-     else if (isNaN(res) ||!isFinite(res)){
+     else if (isNaN(res) ||!isFinite(res) ){
         this.result =this.text;
       }
       else {
@@ -145,6 +149,7 @@ export class AppComponent {
   }
  
   getAnswer() {
+   
     this.calcAnswer();
     if (/[-+*/.]$/.test(this.input)) {
       this.result = ""; 
@@ -155,6 +160,9 @@ export class AppComponent {
     }
     else if (this.result != this.text){
     this.input = this.result;
+    }
+    else if (this.result == this.text){
+      this.result="";
     }
     if (this.input=="0"){
        this.input="0";
