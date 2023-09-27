@@ -14,12 +14,13 @@ export class AppComponent {
   text :string="Cannot Divide with Zero";
  
   pressNum(num: string) {
-    if (num=="."  && this.input.includes(".") ) {
-      if (this.input !="" ) {
-    return;   
+    if (num === "." && this.input.includes(".")) {
+      if (this.input === "") {
+          return;
+      } else if (this.input.endsWith(".")) {
+          return;
       }
-
-    }
+  }
     this.input = this.input + num
     this.calcAnswer();
   }
@@ -107,7 +108,11 @@ export class AppComponent {
        this.input = formula
     }
     if (formula.includes('%')){
-    
+      if(formula.includes('.')){
+        formula = formula.replace(/(%?\d+(\.\d+)?)/g, function(match) {
+          return match.startsWith('%') ? `(${match.slice(1)} / 100)` : match;
+        });
+      }
      formula = formula.replace(/%(\d+)/g, '* ($1 / 100)')
     // formula = formula.replace(/(\d+)%+/g, function(match, number) {
     //   const num = parseFloat(number);
@@ -117,6 +122,8 @@ export class AppComponent {
       const num = parseFloat(number);
       return (num / 100).toString();
     });
+   
+  
     // formula = formula.replace(/(\d+)%+/g, function(match, number) {
     //   const num = parseFloat(number);
     //   return (num / Math.pow(100, match.length - number.length)).toString();
@@ -133,7 +140,9 @@ export class AppComponent {
     // }
    
     try {
-      let res = eval(formula);
+      let cleanedInput = formula.replace(/\b0+(\d+)\b/g, '$1');
+      let res = eval(cleanedInput);
+     
       if (!isNaN(res) && isFinite(res)) {
         this.result = res.toString();
       } 
@@ -144,7 +153,7 @@ export class AppComponent {
         this.result = '';
       }
     } catch (error) {
-      this.result = 'Invalid Input';
+      this.result = 'error';
     }
   }
  
