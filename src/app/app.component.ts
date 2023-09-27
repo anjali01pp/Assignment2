@@ -32,7 +32,7 @@ export class AppComponent {
     
     if (lastKey === '/' || lastKey === '*')  {
       this.result = ""; 
- 
+ return;
     
     }
     else if (lastKey === '+' || lastKey === '-'){
@@ -100,6 +100,7 @@ export class AppComponent {
       formula = formula.replace(/(\d+)%0/g, '$1');
        this.input = formula
     }
+    let key = this.input[this.input.length-1];
     if (formula.includes('%')){
       // if(formula.includes('.')){
       //   formula = formula.replace(/(%?\d+(\.\d+)?)/g, function(match) {
@@ -117,6 +118,11 @@ export class AppComponent {
       return (num / 100).toString();
     });
   }
+  
+  // else if(formula.includes(".") && !formula.startsWith(".0") || !formula.startsWith(".") && key == "%"){
+  //   formula = formula.replace(/%(\d+)/g, '* ($1 / 100) *')
+  
+  // }
   else{
   formula = formula.replace(/%(\d+)/g, '* ($1 / 100)')
   }
