@@ -121,6 +121,7 @@ export class AppComponent {
        this.input = formula
     }
     //let key = this.input[this.input.length-1];
+    const regexPattern: RegExp = /%\d+\.\d+/;
     if (formula.includes('%')){
       // if(formula.includes('.')){
       //   formula = formula.replace(/(%?\d+(\.\d+)?)/g, function(match) {
@@ -138,9 +139,11 @@ export class AppComponent {
       return (num / 100).toString();
     });
   }
- 
- 
+  else if (regexPattern.test(formula)){
+    formula = formula.replace(/%(\d+)/g, '* ($1 / 100) *')
+  }
   else{
+
   formula = formula.replace(/%(\d+)/g, '* ($1 / 100)')
   }
     // formula = formula.replace(/(\d+)%+/g, function(match, number) {
